@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>实现call方法</title>
+</head>
+<body>
+  
+</body>
+</html>
+<script>
+  //实现call的方法，apply的方法类似，只需要改变参数的传值
+  Function.prototype.myCall = function(thisArg,...params){
+    if(thisArg === null || thisArg ===undefined){
+      thisArg = window
+    }
+    //创建一个唯一的变量
+    let specialFun = Symbol()
+    console.log(this,'-----')
+    //把当前函数复制个当前对象的特殊属性
+    thisArg[specialFun] = this
+    //直接运行改变指向的函数
+    let result = thisArg[specialFun](...params)
+    //清除当前变量
+    delete thisArg[specialFun]
+    return result
+  }
+  //实现bind的方法
+  Function.prototype.myBind = function(){
+    const _selfFun = this //保存当前调用的函数,
+        _arg = arguments[0];//第一个对象参数
+    //解析参数
+    let param = Array.prototype.slice.call(arguments,1)
+    //定义个函数，作为返回
+    let funForBind = function(...secParams){
+      //console.log(this,'2222')
+      const isNew = this instanceof funForBind;//判断是否是new 对象构造函数
+      const thisArg = isNew?this:_arg
+
+      return _selfFun.call(thisArg,...param,...secParams)
+
+    }
+    funForBind.prototype = Object.create(_selfFun.prototype);//实现原型链的拷贝
+    return funForBind
+
+  }
+  let obj = {
+    name:'小明',
+    say:function(){
+      console.log(...arguments)
+      console.log(this.name)
+    }
+  }
+  let obj2 = {
+    name:'Mary'
+  }
+  // obj.say.call()
+  // obj.say.myCall(obj2)
+  let sayClone = obj.say.myBind(obj2,1,2,3)
+  sayClone(obj2,12,34)
+  // new sayClone()
+</script>
