@@ -1,0 +1,24 @@
+{
+  "name": "emailsend",
+  "version": "1.0.0",
+  "description": "node emailSend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lovertommorrow/EmailSend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lovertommorrow/EmailSend/issues"
+  },
+  "homepage": "https://github.com/lovertommorrow/EmailSend#readme",
+  "dependencies": {
+    "axios": "^0.21.0",
+    "node-schedule": "^1.3.2",
+    "nodemailer": "^6.4.17"
+  }
+}
