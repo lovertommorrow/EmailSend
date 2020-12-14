@@ -60,4 +60,41 @@
   let sayClone = obj.say.myBind(obj2,1,2,3)
   sayClone(obj2,12,34)
   // new sayClone()
+  //判断多层对象下属性问题
+  function isKeyExists(path, object) {
+    //在browser或者nodejs下，都能安全取得全局对象
+    let global = (function() {
+      return this;
+    }());
+
+    //将传入的对象路径字符串拆分为数组
+    let pathList = path.split('.');
+    let obj = null;
+    //从全局对象中取出名字为 数组[0]的对象
+    let globalObj = global[pathList.shift()];
+    //如果指定了对象，就从对象中查找，如果没有就使用全局环境
+    obj = object || globalObj;
+
+    if(!obj) {
+      return false;
+    }
+
+    for(let i=0; key=pathList[i]; i++) {
+      if(!obj[key]) {
+        return false;
+      }
+      obj = obj[key];
+    }
+    return true;
+  }
+  let obj = {
+    dog:{
+      cat:{
+        name:'asd'
+      }
+    }
+  }
+  console.log(isKeyExists("obj.dog.cat.cc",obj))
+
+
 </script>
